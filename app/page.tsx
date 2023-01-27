@@ -1,16 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import Head from "next/head";
 import { motion, useAnimationControls } from "framer-motion";
 import React, { useEffect, useMemo } from "react";
 import produce from "immer";
-
 import styled from "@emotion/styled";
-import { css, keyframes } from "@emotion/react";
-
-import Script from "next/script";
-import { isBreakOrContinueStatement } from "typescript";
 
 const RESTAURANTS = [
   {
@@ -24,7 +17,6 @@ const RESTAURANTS = [
     menus: [{ name: "오감탕", price: "8500" }],
   },
 ];
-const Map = () => {};
 const MapContainer = styled.div`
   width: 600px;
   height: 400px;
@@ -39,11 +31,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
 `;
-const rotate_image = keyframes`
-  100% {
-        transform: rotate(360deg);
-    }
-`;
+
 const Contents = styled.div`
   margin: 20px auto;
   position: relative;
@@ -64,8 +52,6 @@ const Contents = styled.div`
       cursor: pointer;
     }
   }
-  /* animation: rotate_image 6s linear infinite; */
-  /* transform-origin: 50% 50%; */
 `;
 const Circle = styled(motion.div)`
   width: 500px;
@@ -235,21 +221,6 @@ export default function Home() {
           });
         };
         ps.categorySearch("FD6", placesSearchCB, { useMapBounds: true });
-
-        // const iwContent = `<div class="IwContent">bankmall</div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        // const iwPosition = new kakao.LatLng(
-        //   37.51505354009884,
-        //   126.89554077580914
-        // ); //인포윈도우 표시 위치입니다
-        // const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-        // // 인포윈도우를 생성하고 지도에 표시합니다
-        // const infowindow = new kakao.InfoWindow({
-        //   map: map, // 인포윈도우가 표시될 지도
-        //   position: iwPosition,
-        //   content: iwContent,
-        //   removable: iwRemoveable,
-        // });
       });
     };
     controls.set({
@@ -339,31 +310,31 @@ export default function Home() {
             ease: "linear",
           },
         });
-        // setBtnName("멈추기!");
 
         setBtnLoading(true);
         setTimeout(() => {
           setBtnLoading(false);
+          setBtnName("멈추기!");
         }, 2000);
         break;
       }
       case "멈추기!": {
         endTime.current = new Date();
-        controls.stop();
+        // controls.stop();
         if (!startTime.current) return alert("다시 실행해주세요");
         const durationTime =
           (endTime.current?.getTime() - startTime.current?.getTime()) / 1000;
         const selected = (durationTime * 360) / duration;
         console.log(selected % 360, "time");
 
-        // controls.start({
-        //   rotate: [selected, selected + 360],
+        controls.start({
+          rotate: [selected, selected + 360],
 
-        //   transition: {
-        //     duration: 5,
-        //     ease: "easeOut",
-        //   },
-        // });
+          transition: {
+            duration: 1,
+            ease: "easeOut",
+          },
+        });
         setBtnName("돌리기!");
 
         break;
