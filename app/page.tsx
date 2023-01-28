@@ -3,6 +3,7 @@
 import { motion, useAnimationControls } from "framer-motion";
 import React, { useEffect, useMemo } from "react";
 import produce from "immer";
+import SearchInput from "../src/SearchInput";
 import styled from "@emotion/styled";
 
 const RESTAURANTS = [
@@ -68,70 +69,7 @@ const Circle = styled(motion.div)`
     left: 325px;
   }
 `;
-const Input = styled.div`
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-  input {
-    height: 20px;
-    width: 300px;
-  }
-  div {
-    display: flex;
-    flex-wrap: wrap;
-    div {
-      margin-right: 5px;
-      border: 1px solid gray;
-      padding: 5px 15px;
-      border-radius: 5px;
-      :hover {
-        cursor: pointer;
-      }
-    }
-  }
-`;
-const InputContainer = ({ setOptions }) => {
-  const [input, setInput] = React.useState("");
-  console.log(input, "input");
-  const onChangeInp = (e) => {
-    setInput(e.target.value);
-  };
-  const onClickInp = (e) => {
-    console.log(input, "input");
-    if (e.keyCode === 13) {
-      setOptions(
-        produce((draft: string[]) => {
-          draft.push(input);
-          return draft;
-        })
-      );
-      setInput("");
-    }
-  };
-  const addMenu = (v) => () => {
-    setOptions(
-      produce((draft: string[]) => {
-        draft.push(v);
-        return draft;
-      })
-    );
-  };
-  return (
-    <Input>
-      <h4>식당을 추가해주세요</h4>
-      <input value={input} onChange={onChangeInp} onKeyDown={onClickInp} />
-      <div>
-        {RESTAURANTS.map((el) => (
-          <div key={el.addr} onClick={addMenu(el.name)}>
-            {el.name}
-          </div>
-        ))}
-      </div>
-    </Input>
-  );
-};
+
 // declare const window: typeof globalThis & {
 //   kakao: any;
 // };
@@ -140,13 +78,7 @@ declare global {
     kakao: any;
   }
 }
-type InitialOptions = {
-  // delay?: number;
-  duration: number;
-  repeat?: unknown;
-  repeatDelay?: number;
-  ease: string;
-};
+
 const geom = {
   x: 250,
   y: 250,
@@ -161,9 +93,9 @@ const initialOptions = {
   repeatDelay: 0,
   ease: "linear",
 };
-const duration = 0.5;
+const duration = 0.3;
 export default function Home() {
-  const [options, setOptions] = React.useState([]);
+  const [options, setOptions] = React.useState<string[]>(["1", "2", "3", "4"]);
   const [btnName, setBtnName] = React.useState("돌리기!");
   const [rotateOptions, setRotateOptions] =
     React.useState<InitialOptions>(initialOptions);
@@ -176,6 +108,13 @@ export default function Home() {
   const endTime = React.useRef<Date>();
   const controls = useAnimationControls();
 
+  const handleBallot = (): number => {
+    const selectedNumber = Math.floor(Math.random() * options.length);
+    console.log(selectedNumber, "ccc");
+    return (
+      selectedNumber * (360 / options.length) + Math.floor(Math.random() * 89)
+    );
+  };
   React.useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -183,45 +122,80 @@ export default function Home() {
     document.head.appendChild(script);
 
     script.onload = () => {
-      window.kakao.maps.load(() => {
-        const container = document.getElementById("map");
-        const Gkakao = window.kakao.maps;
-        const options = {
-          center: new Gkakao.LatLng(37.51505354009884, 126.89554077580914),
-          level: 4,
-        };
-        const infowindow = new Gkakao.InfoWindow({ zIndex: 1 });
-
-        const map = new Gkakao.Map(container, options);
-        const ps = new Gkakao.services.Places(map);
-        // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-        const placesSearchCB = (data: unknown, status, pagination) => {
-          if (status === Gkakao.services.Status.OK) {
-            for (var i = 0; i < data.length; i++) {
-              displayMarker(data[i]);
-            }
-          }
-        };
-        const displayMarker = (place) => {
-          // 마커를 생성하고 지도에 표시합니다
-          var marker = new Gkakao.Marker({
-            map: map,
-            position: new Gkakao.LatLng(place.y, place.x),
-          });
-
-          // 마커에 클릭이벤트를 등록합니다
-          Gkakao.event.addListener(marker, "click", () => {
-            // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-            infowindow.setContent(
-              '<div style="padding:5px;font-size:12px;">' +
-                place.place_name +
-                "</div>"
-            );
-            infowindow.open(map, marker);
-          });
-        };
-        ps.categorySearch("FD6", placesSearchCB, { useMapBounds: true });
-      });
+      // window.kakao.maps.load(() => {
+      //   const container = document.getElementById("map");
+      //   const Gkakao = window.kakao.maps;
+      //   const options = {
+      //     center: new Gkakao.LatLng(37.51505354009884, 126.89554077580914),
+      //     level: 2,
+      //   };
+      //   const infowindow = new Gkakao.InfoWindow({ zIndex: 1 });
+      //   const map = new Gkakao.Map(container, options);
+      //   // 장소 검색 객체를 생성합니다
+      //   const ps = new Gkakao.services.Places();
+      //   // 키워드로 장소를 검색합니다
+      //   ps.keywordSearch("문래동 철판", placesSearchCB);
+      //   // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+      //   function placesSearchCB(data, status, pagination) {
+      //     if (status === Gkakao.services.Status.OK) {
+      //       // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+      //       // LatLngBounds 객체에 좌표를 추가합니다
+      //       const bounds = new Gkakao.LatLngBounds();
+      //       console.log(data, "data");
+      //       for (let i = 0; i < data.length; i++) {
+      //         // displayMarker(data[i]);
+      //         // bounds.extend(new Gkakao.LatLng(data[i].y, data[i].x));
+      //       }
+      //       // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+      //       // map.setBounds(bounds);
+      //     }
+      //   }
+      //   // 지도에 마커를 표시하는 함수입니다
+      //   // function displayMarker(place) {
+      //   //   // 마커를 생성하고 지도에 표시합니다
+      //   //   const marker = new Gkakao.Marker({
+      //   //     map: map,
+      //   //     position: new Gkakao.LatLng(place.y, place.x),
+      //   //   });
+      //   //   // 마커에 클릭이벤트를 등록합니다
+      //   //   Gkakao.event.addListener(marker, "click", function () {
+      //   //     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+      //   //     infowindow.setContent(
+      //   //       '<div style="padding:5px;font-size:12px;">' +
+      //   //         place.place_name +
+      //   //         "</div>"
+      //   //     );
+      //   //     infowindow.open(map, marker);
+      //   //   });
+      //   // }
+      //   // const ps = new Gkakao.services.Places(map);
+      //   // // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+      //   // const placesSearchCB = (data: unknown, status, pagination) => {
+      //   //   if (status === Gkakao.services.Status.OK) {
+      //   //     for (const i = 0; i < data.length; i++) {
+      //   //       displayMarker(data[i]);
+      //   //     }
+      //   //   }
+      //   // };
+      //   // const displayMarker = (place) => {
+      //   //   // 마커를 생성하고 지도에 표시합니다
+      //   //   const marker = new Gkakao.Marker({
+      //   //     map: map,
+      //   //     position: new Gkakao.LatLng(place.y, place.x),
+      //   //   });
+      //   //   // 마커에 클릭이벤트를 등록합니다
+      //   //   Gkakao.event.addListener(marker, "click", () => {
+      //   //     // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+      //   //     infowindow.setContent(
+      //   //       '<div style="padding:5px;font-size:12px;">' +
+      //   //         place.place_name +
+      //   //         "</div>"
+      //   //     );
+      //   //     infowindow.open(map, marker);
+      //   //   });
+      //   // };
+      //   // ps.categorySearch("FD6", placesSearchCB, { useMapBounds: true });
+      // });
     };
     controls.set({
       rotate: [0, 0],
@@ -315,7 +289,7 @@ export default function Home() {
         setTimeout(() => {
           setBtnLoading(false);
           setBtnName("멈추기!");
-        }, 2000);
+        }, 200);
         break;
       }
       case "멈추기!": {
@@ -325,16 +299,20 @@ export default function Home() {
         const durationTime =
           (endTime.current?.getTime() - startTime.current?.getTime()) / 1000;
         const selected = (durationTime * 360) / duration;
-        console.log(selected % 360, "time");
 
+        console.log(selected % 360, "time");
+        // controls.stop();
+        const selectedSector = handleBallot();
+        console.log(selectedSector, "selectedSector");
         controls.start({
-          rotate: [selected, selected + 360],
+          rotate: [0, 360 + selectedSector],
 
           transition: {
-            duration: 1,
-            ease: "easeOut",
+            duration: 4,
+            ease: "circOut",
           },
         });
+
         setBtnName("돌리기!");
 
         break;
@@ -347,7 +325,7 @@ export default function Home() {
         type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4e89be21e672c2ea6ecbba62c71fa54a"
       ></Script> */}
-      <InputContainer setOptions={setOptions} />
+      <SearchInput setOptions={setOptions} />
       <Contents>
         <span>▼</span>
         <Circle animate={controls} ref={circleRef}>
@@ -357,7 +335,7 @@ export default function Home() {
         <button
           type="button"
           onClick={onClickRoll}
-          btnName={btnName}
+          // btnName={btnName}
           disabled={btnLoading}
         >
           {btnName}
