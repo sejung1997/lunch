@@ -4,24 +4,23 @@ import produce from "immer";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { debounce } from "lodash";
-const RESTAURANTS = [
-  {
-    name: "문래불백",
-    addr: "서울특별시 영등포구 당산로 2-1",
-    menus: [{ name: "불백", price: "9000" }],
-  },
-  {
-    name: "골목집",
-    addr: "서울특별시 영등포구 도림로139가길 11-1 1층 골목집",
-    menus: [{ name: "오감탕", price: "8500" }],
-  },
-];
+type ResultType = {
+  selectedSection?: boolean;
+};
+type optionType = {
+  value: string;
+  x: number;
+  y: number;
+  isNonButton: boolean;
+};
+
 const Input = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  height: 100px;
   input {
     height: 20px;
     width: 300px;
@@ -29,6 +28,10 @@ const Input = styled.div`
 `;
 const ResultsWrapper = styled.div`
   border: 1px solid gray;
+  position: absolute;
+  top: 105px;
+  z-index: 3;
+  background-color: #fff;
   width: 300px;
 `;
 const Result = styled.div`
@@ -36,6 +39,8 @@ const Result = styled.div`
   border: 1px solid gray;
   display: flex;
   justify-content: space-between;
+  background-color: ${({ selectedSection }: ResultType) =>
+    selectedSection ? "yellow" : ""};
 `;
 const ElCategory = styled.span`
   font-size: 10px;
@@ -73,83 +78,94 @@ interface SearchAddressResult {
   x: string;
   y: string;
 }
-const SearchInput = ({ setOptions }) => {
+
+const SearchInput = ({ setAddress }) => {
   const [input, setInput] = React.useState("");
   const [data, setData] = React.useState<SearchAddressResult[]>([]);
+  const [isNonResultShow, setIsNonResultShow] = React.useState(false);
+  const [selectedSection, setSelectedSection] = React.useState(0);
   console.log(input, "input");
   const onChangeInp = (e) => {
     setInput(e.target.value);
   };
 
-  const handlerSearch = (keyWord: string) => {
-    console.log(keyWord);
-    return window.kakao.maps.load(() => {
-      const Gkakao = window.kakao.maps;
-      // 장소 검색 객체를 생성합니다
-      const ps = new Gkakao.services.Places();
-      console.log(ps);
+  // const handlerSearch = (keyWord: string) => {
+  //   console.log(keyWord);
+  //   return window.kakao.maps.load(() => {
+  //     const Gkakao = window.kakao.maps;
+  //     // 장소 검색 객체를 생성합니다
+  //     const ps = new Gkakao.services.Places();
+  //     console.log(ps);
 
-      const placesSearchCB = (data: unknown, status: string) => {
-        switch (status) {
-          case Gkakao.services.Status.OK: {
-            console.log(data);
-            return data;
-          }
-          case Gkakao.services.Status.ZERO_RESULT: {
-            console.log("no results");
+  //     const placesSearchCB = (data: unknown, status: string) => {
+  //       switch (status) {
+  //         case Gkakao.services.Status.OK: {
+  //           console.log(data);
+  //           return data;
+  //         }
+  //         case Gkakao.services.Status.ZERO_RESULT: {
+  //           console.log("no results");
 
-            return "no results";
-          }
-          case Gkakao.services.Status.ERROR: {
-            console.log("errora");
+  //           return "no results";
+  //         }
+  //         case Gkakao.services.Status.ERROR: {
+  //           console.log("errora");
 
-            return " error";
-          }
-        }
-      };
-      // // 키워드로 장소를 검색합니다
-      return ps.keywordSearch(keyWord, placesSearchCB);
-    });
-  };
-
-  React.useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=4e89be21e672c2ea6ecbba62c71fa54a&libraries=services,clusterer&autoload=false";
-    document.head.appendChild(script);
-
-    script.onload = () => {};
-  }, []);
+  //           return " error";
+  //         }
+  //       }
+  //     };
+  //     // // 키워드로 장소를 검색합니다
+  //     return ps.keywordSearch(keyWord, placesSearchCB);
+  //   });
+  // };
 
   const onChangeInput = async (keyword: any) => {
     console.log(keyword, "e");
+    try {
+      const { data } = await instance.get(
+        `keyword.json?y=37.51505354009884&x=126.89554077580914&radius=1000&category_group_code=FD6&query=${keyword}`
+      );
+      if (data.documents.length === 0) {
+        setIsNonResultShow(true);
+        setTimeout(() => setIsNonResultShow(false), 1000);
+      }
+      setData(data.documents);
+      setSelectedSection(0);
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.data.errorType === "MissingParameter") setData([]);
+    }
+  };
 
-    const { data } = await instance.get(
-      `keyword.json?y=37.51505354009884&x=126.89554077580914&radius=1000&category_group_code=FD6&query=${keyword}`
-    );
-    // .then((res) => console.log(res, "??"));
-    setData(data.documents);
-    // console.log(handlerSearch(e));
-    // console.log(input, "input");
-    // if (e.keyCode === 13) {
-    //   setOptions(
-    //     produce((draft: string[]) => {
-    //       draft.push(input);
-    //       return draft;
-    //     })
-    //   );
-    //   setInput("");
-    // }
+  const keyDownInput = (e) => {
+    console.log(e.code, "e");
+
+    switch (e.code) {
+      case "ArrowUp": {
+        if (selectedSection === 0) return;
+        setSelectedSection((prev) => prev - 1);
+        break;
+      }
+      case "ArrowDown": {
+        if (selectedSection === data.length - 1) return;
+        setSelectedSection((prev) => prev + 1);
+        break;
+      }
+      case "Enter": {
+        console.log("enter cc");
+        console.log(data[selectedSection], "cc");
+        setAddress({
+          value: data[selectedSection]?.place_name,
+          y: Number(data[selectedSection]?.x),
+          x: Number(data[selectedSection]?.y),
+        });
+        setData([]);
+      }
+      default:
+        return;
+    }
   };
-  const addMenu = (value: string, address: string) => () => {
-    setOptions(
-      produce((draft: string[]) => {
-        draft.push(v);
-        return draft;
-      })
-    );
-  };
-  const keyDownInput = () => {};
   return (
     <Input>
       <h4>식당을 추가해주세요</h4>
@@ -158,17 +174,19 @@ const SearchInput = ({ setOptions }) => {
         onKeyDown={keyDownInput}
         onChange={debounce((e: any) => onChangeInput(e.target.value), 1000)}
       />
-      <ResultsWrapper>
-        {data?.map((el: SearchAddressResult) => (
-          <Result
-            key={el.id}
-            onClick={addMenu(el.place_name, el.road_address_name)}
-          >
-            {el.place_name}{" "}
-            <ElCategory>{el.category_name.split(">").at(-1)}</ElCategory>
-          </Result>
-        ))}
-      </ResultsWrapper>
+
+      {data.length > 0 ? (
+        <ResultsWrapper>
+          {data?.map((el: SearchAddressResult, index) => (
+            <Result selectedSection={selectedSection === index} key={el.id}>
+              {el.place_name}{" "}
+              <ElCategory>{el.category_name.split(">").at(-1)}</ElCategory>
+            </Result>
+          ))}
+        </ResultsWrapper>
+      ) : (
+        isNonResultShow && <Result>검색 결과가 없습니다</Result>
+      )}
     </Input>
   );
 };
