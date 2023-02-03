@@ -1,17 +1,16 @@
 import styled from "@emotion/styled";
 
-import { motion, useAnimationControls } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const Container = styled.div`
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
 `;
 export const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
+  width: 66%;
 `;
 export const Contents = styled.div`
   margin: 20px auto;
@@ -21,18 +20,6 @@ export const Contents = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  span {
-    font-size: 50px;
-  }
-  button {
-    width: 200px;
-    font-size: 25px;
-    height: 40px;
-    z-index: 4;
-    :hover {
-      cursor: pointer;
-    }
-  }
 `;
 export const Circle = styled(motion.div)`
   width: 500px;
@@ -47,5 +34,22 @@ export const Circle = styled(motion.div)`
     position: absolute;
     top: 225px;
     left: 325px;
+  }
+`;
+export const RolletMark = styled.span`
+  font-size: 40px;
+  color: #333;
+`;
+export const ButtonGroup = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
+export const Button = styled.button`
+  font-size: 20px;
+  padding: 5px 20px;
+  z-index: 5;
+  :hover {
+    cursor: pointer;
   }
 `;

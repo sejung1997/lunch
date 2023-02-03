@@ -2,21 +2,12 @@ import styled from "@emotion/styled";
 import produce from "immer";
 import { add, drop } from "lodash";
 import React from "react";
+import { optionType } from "../typings";
 export const Map = styled.div`
   width: 100%;
   height: 400px;
-  /* margin: 50px auto; */
-  /* padding: 40px; */
-  .IwContent {
-    text-align: center;
-  }
 `;
-type optionType = {
-  value: string;
-  x: number;
-  y: number;
-  isNonButton: boolean;
-};
+
 type MapContainerProps = {
   address: optionType;
   setOptions?: any;
@@ -25,12 +16,11 @@ const AddButton = styled.button`
   width: 150px;
   height: 30px;
   margin: 50px auto;
-
-  /* position: absolute; */
 `;
 const Container = styled.div`
   height: 300px;
-  width: 33%;
+  width: 40%;
+  margin: 160px 60px;
 `;
 const MapContainer = ({ address, setOptions }: MapContainerProps) => {
   const container = React.useRef(null);

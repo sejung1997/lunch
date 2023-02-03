@@ -1,28 +1,13 @@
 "use client";
 
-import { motion, useAnimationControls } from "framer-motion";
-import React, { useEffect, useMemo } from "react";
+import { useAnimationControls } from "framer-motion";
+import React from "react";
 import produce from "immer";
 import SearchInput from "@/src/searchInput";
-import LatelyItems from "@/src/latelyItems";
 import MapContainer from "@/src/mapContainer";
-import * as S from "../styles/pages";
-import Modal from "@/src/modal";
+import * as S from "../styles/page.style";
+import { optionType } from "../typings";
 
-// declare const window: typeof globalThis & {
-//   kakao: any;
-// };
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-type optionType = {
-  value: string;
-  x: number;
-  y: number;
-  isNonButton?: boolean;
-};
 const geom = {
   x: 250,
   y: 250,
@@ -31,40 +16,47 @@ const geom = {
   endAngle: 360,
   anticlockwise: true,
 };
-const initialOptions = {
-  duration: 1,
-  repeat: Infinity,
-  repeatDelay: 0,
-  ease: "linear",
+const initAddress = {
+  y: 126.8954,
+  x: 37.5151,
+  value: "뱅크몰",
+  isNonButton: true,
 };
 const duration = 0.3;
-
+type ButtonName = "돌리기!" | "다시 돌리기!" | "멈추기!";
 export default function Home() {
   const [options, setOptions] = React.useState<optionType[]>([]);
-  const [address, setAddress] = React.useState<optionType>({
-    y: 126.570667,
-    x: 33.450701,
-    value: "뱅크몰",
-    isNonButton: true,
-  });
-  const [buttonName, setButtonName] = React.useState("돌리기!");
+  const [address, setAddress] = React.useState<optionType>(initAddress);
+  const [buttonName, setButtonName] = React.useState<ButtonName>("돌리기!");
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [btnLoading, setBtnLoading] = React.useState<Boolean>(false);
+  const [btnLoading, setBtnLoading] = React.useState(false);
 
   const circleRef = React.useRef(null);
+  const isRerollingRef = React.useRef(false);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const startTime = React.useRef<Date>();
-  const endTime = React.useRef<Date>();
   const controls = useAnimationControls();
 
-  const handleBallot = (): { angle: number; selectedNumber: number } => {
-    const selectedNumber = Math.floor(Math.random() * options.length);
-    console.log(selectedNumber, "ccc");
+  const handleBallot = (): { selectedAngle: number; selectedIndex: number } => {
+    const eachDeg = 360 / options.length;
+
+    const selectedAngle = Math.floor(Math.random() * 360);
+    const startDeg = 90 - eachDeg;
+    const index = Math.floor((selectedAngle - 90) / eachDeg);
+
+    let selectedIndex;
+    if (startDeg < 0) {
+      if (index >= options.length - 1) selectedIndex = 0;
+      else selectedIndex = index + 1;
+    } else {
+      if (selectedAngle <= startDeg) {
+        const temp = Math.floor((startDeg - selectedAngle) / eachDeg);
+        selectedIndex = options.length - 1 - temp;
+      } else selectedIndex = index + 1;
+    }
+
     return {
-      angle:
-        selectedNumber * (360 / options.length) +
-        Math.floor(Math.random() * 89),
-      selectedNumber,
+      selectedAngle,
+      selectedIndex,
     };
   };
   React.useEffect(() => {
@@ -73,11 +65,10 @@ export default function Home() {
     });
   }, []);
 
-  const degToRad = React.useCallback((deg) => {
+  const degToRad = React.useCallback((deg: number) => {
     return (Math.PI / 180) * deg;
   }, []);
-
-  const draw = () => {
+  const draw = React.useCallback(() => {
     if (!document.getElementById("canvas")) return;
 
     // const canvas = document.getElementById("canvas")<HTMLCanvasElement>;
@@ -133,22 +124,22 @@ export default function Home() {
         ctx.lineTo(geom.x, geom.y);
       }
     }
-    console.log(degToRad(geom.statrAngle), degToRad(geom.endAngle));
     ctx.stroke();
-  };
-  console.log(options, "options");
+  }, [options]);
   React.useEffect(() => {
     draw();
+    if (!isRerollingRef.current) return;
+    onClickRoll();
   }, [options]);
 
   const onClickRoll = async () => {
     switch (buttonName) {
       case "돌리기!":
       case "다시 돌리기!": {
-        // startTime.current = new Date();
+        isRerollingRef.current = false;
 
         controls.start({
-          rotate: [0, 360],
+          rotate: [0, -360],
           transition: {
             duration,
             repeat: Infinity,
@@ -161,67 +152,68 @@ export default function Home() {
         setTimeout(() => {
           setBtnLoading(false);
           setButtonName("멈추기!");
-        }, 200);
+        }, 2200);
         break;
       }
       case "멈추기!": {
-        // endTime.current = new Date();
-        // controls.stop();
-        // if (!startTime.current) return alert("다시 실행해주세요");
-        // const durationTime =
-        //   (endTime.current?.getTime() - startTime.current?.getTime()) / 1000;
-        // const selected = (durationTime * 360) / duration;
+        isRerollingRef.current = true;
 
-        // console.log(selected % 360, "time");
-        // controls.stop();
         const selected = handleBallot();
 
         console.log(selected, "selectedSector");
         controls.start({
-          rotate: [0, 360 + selected.angle],
+          rotate: [0, -360 - selected.selectedAngle],
 
           transition: {
-            duration: 4,
+            duration: 4.5,
             ease: "circOut",
           },
         });
-
-        setButtonName("다시 돌리기!");
         setTimeout(() => {
           setAddress({
-            ...options[selected.selectedNumber],
+            ...options[selected.selectedIndex],
             isNonButton: true,
           });
+          setButtonName("다시 돌리기!");
         }, 4500);
         break;
       }
     }
   };
+  const onClickReRoll = () => {
+    console.log("ccc");
+    setOptions(
+      produce((draft) => {
+        return draft.filter((x) => x.value !== address.value);
+      })
+    );
+    setAddress(initAddress);
+    isRerollingRef.current = true;
+  };
   return (
     <S.Container>
-      {/* {isModalOpen && (
-        <Modal setIsModalOpen={setIsModalOpen}>
-          <MapContainer address={address} />
-        </Modal>
-      )} */}
-
-      {/* <Script
-        type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4e89be21e672c2ea6ecbba62c71fa54a"
-      ></Script> */}
       <S.SearchContainer>
-        {/* <LatelyItems /> */}
         <SearchInput setAddress={setAddress} />
 
         <S.Contents>
-          <span>▼</span>
+          <S.RolletMark>▼</S.RolletMark>
           <S.Circle animate={controls} ref={circleRef}>
             <canvas ref={canvasRef} width="500" height="500" id="canvas" />
-            {/* <div /> */}
           </S.Circle>
-          <button type="button" onClick={onClickRoll} disabled={btnLoading}>
-            {buttonName}
-          </button>
+          <S.ButtonGroup>
+            <S.Button type="button" onClick={onClickRoll} disabled={btnLoading}>
+              {buttonName}
+            </S.Button>
+            {buttonName === "다시 돌리기!" && isRerollingRef.current && (
+              <S.Button
+                type="button"
+                onClick={onClickReRoll}
+                disabled={btnLoading}
+              >
+                {address.value} 제외하고 다시 돌리기
+              </S.Button>
+            )}
+          </S.ButtonGroup>
         </S.Contents>
       </S.SearchContainer>
 
