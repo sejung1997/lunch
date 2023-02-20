@@ -11,6 +11,7 @@ export const Map = styled.div`
 type MapContainerProps = {
   address: optionType;
   setOptions?: any;
+  canvasRef?: React.RefObject<HTMLCanvasElement>;
 };
 const AddButton = styled.button`
   width: 150px;
@@ -22,7 +23,33 @@ const Container = styled.div`
   width: 40%;
   margin: 160px 60px;
 `;
-const MapContainer = ({ address, setOptions }: MapContainerProps) => {
+const dataURLtoFile = (dataurl, filename) => {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+};
+const dataURLtoBlob = (dataurl: string) => {
+  const arr = dataurl.split(",");
+  const mime = arr[0].match(/:(.*?);/)?.[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+};
+const MapContainer = ({
+  address,
+  setOptions,
+  canvasRef,
+}: MapContainerProps) => {
   const container = React.useRef(null);
   React.useEffect(() => {
     console.log(Number(address?.x), "address");
@@ -82,11 +109,78 @@ const MapContainer = ({ address, setOptions }: MapContainerProps) => {
       })
     );
   };
+  React.useEffect((): (() => void) => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+  const shareKakao = () => {
+    // url이 id값에 따라 변경되기 때문에 route를 인자값으로 받아줌
+    if (!canvasRef?.current) return;
+    const imgUrl = canvasRef.current.toDataURL();
+    const blobURl = dataURLtoBlob(imgUrl);
+    console.log(blobURl, "temp_url");
+
+    const temp_url = window.URL.createObjectURL(blobURl);
+    console.log(temp_url, "temp_url");
+    // const objectURL = window.URL.createObjectURL(imgUrl);
+
+    // const fileReader = new FileReader();
+    // fileReader.readAsText(imgUrl);
+    // fileReader.onload = (data) => {
+    //   console.log(data.target?.result);
+    //   if (typeof data.target?.result === "string")
+    //     console.log(data.target?.result);
+    // };
+    // const file = dataURLtoFile(imgUrl, "a.png");
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    if (window.Kakao) {
+      const kakao = window.Kakao;
+      if (!kakao.isInitialized()) {
+        kakao.init("128db4cb5e3c20292dd0427f6c744e24"); // 카카오에서 제공받은 javascript key를 넣어줌 -> .env파일에서 호출시킴
+      }
+
+      kakao.Share.sendDefault({
+        objectType: "location", // 카카오 링크 공유 여러 type들 중 feed라는 타입 -> 자세한 건 카카오에서 확인
+        address: address.address,
+        addressTitle: address.value,
+        content: {
+          title: "롤렛 추첨 결과", // 인자값으로 받은 title
+          description: `${address.value}입니다`, // 인자값으로 받은 title
+          imageUrl:
+            "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+          link: {
+            mobileWebUrl: "http/192.169.42.59:3000/",
+            webUrl: "http/192.169.42.59:3000/",
+          },
+        },
+        buttons: [
+          {
+            title: "지도로 확인하기",
+            link: {
+              mobileWebUrl: "https://developers.kakao.com",
+              // webUrl: `https://map.kakao.com/link/to/${address.value},${addres js.x},${address.y}`,
+              webUrl: "https://developers.kakao.com",
+            },
+          },
+        ],
+      });
+    }
+  };
   return (
     <Container>
       <Map ref={container} id="map"></Map>
       {address.x && !address?.isNonButton && (
         <AddButton onClick={handlerAddOptions}>추가하기</AddButton>
+      )}
+      {address.x && address?.isNonButton && (
+        <AddButton onClick={shareKakao}>공유하기</AddButton>
       )}
     </Container>
   );

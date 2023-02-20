@@ -51,7 +51,16 @@ const SearchInput = ({ setAddress }) => {
       if (error.response.data.errorType === "MissingParameter") setData([]);
     }
   };
-
+  const handleSetAddress = (index) => () => {
+    setAddress({
+      value: data[index]?.place_name,
+      y: Number(data[index]?.x),
+      x: Number(data[index]?.y),
+      isNonButton: false,
+    });
+    setInput("");
+    setData([]);
+  };
   const keyDownInput = (e) => {
     console.log(e.code, "keyDownInput");
     if (data.length === 0) return;
@@ -69,6 +78,7 @@ const SearchInput = ({ setAddress }) => {
       case "Enter": {
         setAddress({
           value: data[selectedSection]?.place_name,
+          address: data[selectedSection]?.address_name,
           y: Number(data[selectedSection]?.x),
           x: Number(data[selectedSection]?.y),
           isNonButton: false,
@@ -90,7 +100,11 @@ const SearchInput = ({ setAddress }) => {
       {data.length > 0 ? (
         <S.ResultsWrapper>
           {data?.map((el: SearchAddressResult, index) => (
-            <S.Result selectedSection={selectedSection === index} key={el.id}>
+            <S.Result
+              selectedSection={selectedSection === index}
+              key={el.id}
+              onClick={handleSetAddress(index)}
+            >
               {el.place_name}{" "}
               <S.ElCategory>{el.category_name.split(">").at(-1)}</S.ElCategory>
             </S.Result>

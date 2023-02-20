@@ -21,6 +21,7 @@ const initAddress = {
   x: 37.5151,
   value: "뱅크몰",
   isNonButton: true,
+  address_name: undefined,
 };
 const duration = 0.3;
 type ButtonName = "돌리기!" | "다시 돌리기!" | "멈추기!";
@@ -33,6 +34,7 @@ export default function Home() {
 
   const circleRef = React.useRef(null);
   const isRerollingRef = React.useRef(false);
+  const imgUrlRef = React.useRef<unknown>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const controls = useAnimationControls();
 
@@ -68,6 +70,7 @@ export default function Home() {
   const degToRad = React.useCallback((deg: number) => {
     return (Math.PI / 180) * deg;
   }, []);
+
   const draw = React.useCallback(() => {
     if (!document.getElementById("canvas")) return;
 
@@ -126,6 +129,7 @@ export default function Home() {
     }
     ctx.stroke();
   }, [options]);
+
   React.useEffect(() => {
     draw();
     if (!isRerollingRef.current) return;
@@ -190,6 +194,7 @@ export default function Home() {
     setAddress(initAddress);
     isRerollingRef.current = true;
   };
+
   return (
     <S.Container>
       <S.SearchContainer>
@@ -217,7 +222,11 @@ export default function Home() {
         </S.Contents>
       </S.SearchContainer>
 
-      <MapContainer address={address} setOptions={setOptions} />
+      <MapContainer
+        address={address}
+        setOptions={setOptions}
+        canvasRef={canvasRef}
+      />
     </S.Container>
   );
 }
