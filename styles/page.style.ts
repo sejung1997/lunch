@@ -13,7 +13,7 @@ export const SearchContainer = styled.div`
   width: 66%;
 `;
 export const Contents = styled.div`
-  margin: 20px auto;
+  margin: 150px auto;
   position: relative;
   display: flex;
   height: 600px;
@@ -22,8 +22,8 @@ export const Contents = styled.div`
   justify-content: space-between;
 `;
 export const Circle = styled(motion.div)`
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   top: 15px;
   margin: 0 auto;
   position: absolute;

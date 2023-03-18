@@ -3,11 +3,14 @@ type ResultType = {
   selectedSection?: boolean;
 };
 export const Input = styled.div`
-  margin: 0 auto;
+  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: absolute;
   padding: 10px;
+  top: 0;
+  left: calc(50% - 150px);
   height: 100px;
   input {
     height: 20px;
