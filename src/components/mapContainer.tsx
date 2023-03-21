@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import produce from "immer";
 import { add, drop } from "lodash";
 import React from "react";
-import { optionType } from "../typings";
+import { optionType } from "../types/type";
 export const Map = styled.div`
   width: 100%;
   height: 400px;
@@ -13,6 +13,12 @@ type MapContainerProps = {
   setOptions?: any;
   canvasRef?: React.RefObject<HTMLCanvasElement>;
 };
+declare global {
+  interface Window {
+    Kakao: any;
+    kakao: any;
+  }
+}
 const AddButton = styled.button`
   width: 150px;
   height: 30px;
@@ -23,17 +29,7 @@ const Container = styled.div`
   width: 40%;
   margin: 160px 60px;
 `;
-const dataURLtoFile = (dataurl, filename) => {
-  var arr = dataurl.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return new File([u8arr], filename, { type: mime });
-};
+
 const dataURLtoBlob = (dataurl: string) => {
   const arr = dataurl.split(",");
   const mime = arr[0].match(/:(.*?);/)?.[1];

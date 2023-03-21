@@ -1,10 +1,10 @@
 import { useAnimationControls } from "framer-motion";
 import React from "react";
 import produce from "immer";
-import SearchInput from "@/src/searchInput";
-import MapContainer from "@/src/mapContainer";
-import * as S from "../styles/page.style";
-import { optionType } from "../typings";
+import SearchInput from "./searchInput";
+import MapContainer from "./mapContainer";
+import * as S from "./main.style";
+import { optionType } from "../types/type";
 
 const geom = {
   x: 250,

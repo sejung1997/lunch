@@ -1,10 +1,10 @@
-"use client";
 import React, { SetStateAction } from "react";
 import produce from "immer";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { debounce } from "lodash";
-import * as S from "../styles/searchInput.style";
+import * as S from "./searchInput.style";
+import { optionType } from "../types/type";
 
 interface SearchAddressResult {
   address_name: string;
@@ -19,7 +19,14 @@ interface SearchAddressResult {
   x: string;
   y: string;
 }
-
+type SearchInputProps = {
+  setAddress: React.Dispatch<React.SetStateAction<optionType>>;
+};
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
 const instance = axios.create({
   baseURL: "https://dapi.kakao.com/v2/local/search",
   headers: {
@@ -28,7 +35,7 @@ const instance = axios.create({
   },
 });
 
-const SearchInput = ({ setAddress }) => {
+const SearchInput = ({ setAddress }: SearchInputProps) => {
   const [input, setInput] = React.useState<string>("");
   const [data, setData] = React.useState<SearchAddressResult[]>([]);
   const [isNonResultShow, setIsNonResultShow] = React.useState(false);
@@ -38,7 +45,7 @@ const SearchInput = ({ setAddress }) => {
     console.log(keyword, "onChangeInput");
     try {
       const { data } = await instance.get(
-        `keyword.json?y=37.51505354009884&x=126.89554077580914&radius=1000&category_group_code=FD6&query=${keyword}`
+        `keyword.json?y=37.51505354009884&x=126.89554077580914&radius=20000&category_group_code=FD6&query=${keyword}`
       );
       if (data.documents.length === 0) {
         setIsNonResultShow(true);
@@ -51,7 +58,7 @@ const SearchInput = ({ setAddress }) => {
       if (error.response.data.errorType === "MissingParameter") setData([]);
     }
   };
-  const handleSetAddress = (index) => () => {
+  const handleSetAddress = (index: number) => () => {
     setAddress({
       value: data[index]?.place_name,
       y: Number(data[index]?.x),
@@ -61,7 +68,7 @@ const SearchInput = ({ setAddress }) => {
     setInput("");
     setData([]);
   };
-  const keyDownInput = (e) => {
+  const keyDownInput = (e: any) => {
     console.log(e.code, "keyDownInput");
     if (data.length === 0) return;
     switch (e.code) {
