@@ -6,6 +6,15 @@ import { Global } from "@emotion/react";
 // import SearchInput from "./components/searchInput";
 import SvgMap from "./components/maps/Maps.container";
 import { RegionInputs } from "./types/type";
+import { stepState } from "./data/atoms";
+import Roller from "./components/main";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 
 const Container = styled.div`
   width: 100%;
@@ -13,6 +22,9 @@ const Container = styled.div`
   background-color: #fffaf0;
   display: flex;
   justify-content: center;
+  div {
+    width: 100%;
+  }
 `;
 const Title = styled.div``;
 const SelectRegion = () => {
@@ -28,15 +40,16 @@ const SelectRegion = () => {
     </>
   );
 };
+
 const App = () => {
-  const [step, setStep] = React.useState<number>(0);
+  const [step, setStep] = useRecoilState(stepState);
   const Contents = React.useMemo(() => {
     switch (step) {
       case 0: {
         return <SelectRegion />;
       }
       case 1: {
-        return <SelectRegion />;
+        return <Roller />;
       }
       case 2: {
         return <SelectRegion />;
@@ -51,6 +64,8 @@ const App = () => {
       <Global styles={Reset} />
       <div>
         <Title>점심 뽑기</Title>
+        <div>{step}</div>
+        <button onClick={() => setStep((prev) => prev + 1)}> + 1 </button>
         {Contents}
       </div>
     </Container>

@@ -23,7 +23,7 @@ const initAddress = {
 };
 const duration = 0.3;
 type ButtonName = "돌리기!" | "다시 돌리기!" | "멈추기!";
-export default function Home() {
+export default function Roller() {
   const [options, setOptions] = React.useState<optionType[]>([]);
   const [address, setAddress] = React.useState<optionType>(initAddress);
   const [buttonName, setButtonName] = React.useState<ButtonName>("돌리기!");

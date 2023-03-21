@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 export const Container = styled.div`
   display: flex;
   justify-content: center;
+  width: 100%;
 `;
 export const SearchContainer = styled.div`
   display: flex;
@@ -20,6 +21,7 @@ export const Contents = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid red;
 `;
 export const Circle = styled(motion.div)`
   width: 400px;
