@@ -7,7 +7,10 @@ export const Main = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fffaf0;
+  border: 1px solid red;
+
   align-items: center;
+  /* justify-content: center; */
 `;
 export const Contents = styled.div`
   display: flex;

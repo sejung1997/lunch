@@ -18,26 +18,41 @@ import {
 
 const Container = styled.div`
   width: 100%;
+  overflow: hidden;
+  flex-direction: column;
   height: 100vh;
   background-color: #fffaf0;
   display: flex;
+  align-items: center;
   justify-content: center;
   div {
     width: 100%;
   }
 `;
-const Title = styled.div``;
+const Title = styled.div`
+  text-align: center;
+  strong {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 35px;
+  }
+  p {
+  }
+`;
+const MapContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
 const SelectRegion = () => {
   const [inputs, setInputs] = React.useState<RegionInputs>({
     doName: "",
     cityName: "",
   });
   return (
-    <>
-      <title>지역을 선택해주세요</title>
-      <SvgMap inputs={inputs} setInputs={setInputs} />
-      {/* <SearchInput setAddress={setAddress} /> */}
-    </>
+    <MapContainer>
+      <SvgMap inputs={inputs} setInputs={setInputs} />;
+    </MapContainer>
   );
 };
 
@@ -62,12 +77,13 @@ const App = () => {
   return (
     <Container>
       <Global styles={Reset} />
-      <div>
-        <Title>점심 뽑기</Title>
-        <div>{step}</div>
-        <button onClick={() => setStep((prev) => prev + 1)}> + 1 </button>
-        {Contents}
-      </div>
+      <Title>
+        <strong>점심 뽑기</strong>
+        <p>지역을 선택해주세요</p>
+      </Title>
+      {/* <div>{step}</div>
+      <button onClick={() => setStep((prev) => prev + 1)}> + 1 </button> */}
+      {Contents}
     </Container>
   );
 };
