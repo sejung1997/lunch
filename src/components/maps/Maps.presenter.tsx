@@ -1,5 +1,5 @@
 import * as Maps from "./Maps.styles";
-import React from "react";
+import React, { RefObject } from "react";
 import ChungBook from "./mapsSource/chungBook";
 import ChungNam from "./mapsSource/chungNam";
 import GangOne from "./mapsSource/gangOne";
@@ -15,6 +15,7 @@ type MapUiProps = {
   setCityName: (v: string) => void;
   selectDo: (e: any) => void;
   reset: () => void;
+  wholeMapRef: RefObject<HTMLDivElement>;
 };
 export default function MapsUI(props: MapUiProps) {
   return (
@@ -30,14 +31,16 @@ export default function MapsUI(props: MapUiProps) {
       </Head> */}
       <Maps.BackBtn onClick={props.reset}>
         {/* <img src="/images/mytrips-write-log1.png" /> */}
-        {props.inputs.doName ? "<전국 지도로>   " : ""}
+        {props.inputs.doName ? "다시 선택하기" : ""}
       </Maps.BackBtn>
       <Maps.search>
         {/* <img src="/images/mytrips-write-log1.png" /> */}
-        {/* {props.inputs.doName ? "<검색>" : ""} */}
+        {props.inputs.cityName ? "<검색>" : ""}
       </Maps.search>
-
-      <Maps.Contents id="wholeMap">
+      <Maps.SelectedRegion>
+        {props.inputs?.doName} {props.inputs?.cityName}
+      </Maps.SelectedRegion>
+      <Maps.Contents id="wholeMap" ref={props.wholeMapRef}>
         <svg
           style={{
             background: "#fffaf0  ",

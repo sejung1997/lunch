@@ -5,7 +5,7 @@ import React from "react";
 import { optionType } from "../types/type";
 export const Map = styled.div`
   width: 100%;
-  height: 400px;
+  height: 350px;
 `;
 
 type MapContainerProps = {
@@ -24,10 +24,11 @@ const AddButton = styled.button`
   height: 30px;
   margin: 50px auto;
 `;
-const Container = styled.div`
+const MapContents = styled.div`
   height: 300px;
-  width: 40%;
-  margin: 160px 60px;
+  width: 60%;
+  margin: 100px 0px;
+  border: 1px solid blue;
 `;
 
 const dataURLtoBlob = (dataurl: string) => {
@@ -170,7 +171,7 @@ const MapContainer = ({
     }
   };
   return (
-    <Container>
+    <MapContents>
       <Map ref={container} id="map"></Map>
       {address.x && !address?.isNonButton && (
         <AddButton onClick={handlerAddOptions}>추가하기</AddButton>
@@ -178,7 +179,7 @@ const MapContainer = ({
       {address.x && address?.isNonButton && (
         <AddButton onClick={shareKakao}>공유하기</AddButton>
       )}
-    </Container>
+    </MapContents>
   );
 };
 export default MapContainer;

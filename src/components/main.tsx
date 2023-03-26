@@ -9,7 +9,7 @@ import { optionType } from "../types/type";
 const geom = {
   x: 250,
   y: 250,
-  radius: 250,
+  radius: 200,
   statrAngle: 0,
   endAngle: 360,
   anticlockwise: true,
@@ -201,7 +201,7 @@ export default function Roller() {
         <S.Contents>
           <S.RolletMark>▼</S.RolletMark>
           <S.Circle animate={controls} ref={circleRef}>
-            <canvas ref={canvasRef} width="500" height="500" id="canvas" />
+            <canvas ref={canvasRef} width="450" height="450" id="canvas" />
           </S.Circle>
           <S.ButtonGroup>
             <S.Button type="button" onClick={onClickRoll} disabled={btnLoading}>

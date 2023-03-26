@@ -2,12 +2,11 @@ import styled from "@emotion/styled";
 // import { breakPoints } from "../../../commons/styles/Media";
 export const Main = styled.div`
   width: 500px;
-  height: 430px;
+  height: 470px;
   position: relative;
   display: flex;
   flex-direction: column;
   background-color: #fffaf0;
-  border: 1px solid red;
 
   align-items: center;
   /* justify-content: center; */
@@ -25,6 +24,7 @@ export const Text = styled.text`
   font-size: 35px;
   font-weight: 500;
   padding: 20px;
+  display: none;
   text-anchor: middle;
   alignment-baseline: middle;
   fill: #2c3131;
@@ -36,6 +36,13 @@ export const Text = styled.text`
     cursor: pointer;
     fill: #2c3131;
   }
+`;
+export const SelectedRegion = styled.div`
+  border: 1px solid red;
+  z-index: 1000;
+  position: absolute;
+  right: 0;
+  top: 0;
 `;
 export const Path = styled.path`
   stroke-linejoin: round;
