@@ -1,6 +1,7 @@
 export type RegionInputs = {
-  doName: string;
-  cityName: string;
+  x: string;
+  y: string;
+  name: string;
 };
 
 export type DooRegionProps = {

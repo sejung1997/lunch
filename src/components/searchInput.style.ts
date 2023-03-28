@@ -9,7 +9,7 @@ export const Input = styled.div`
   align-items: center;
   position: absolute;
   padding: 10px;
-  top: 150px;
+  top: 100px;
   left: calc(50% - 150px);
   height: 100px;
   input {

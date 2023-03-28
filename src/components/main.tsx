@@ -195,9 +195,9 @@ export default function Roller() {
 
   return (
     <S.Container>
-      <S.SearchContainer>
-        <SearchInput setAddress={setAddress} />
+      <SearchInput setAddress={setAddress} />
 
+      <S.SearchContainer>
         <S.Contents>
           <S.RolletMark>▼</S.RolletMark>
           <S.Circle animate={controls} ref={circleRef}>
@@ -218,13 +218,12 @@ export default function Roller() {
             )}
           </S.ButtonGroup>
         </S.Contents>
+        <MapContainer
+          address={address}
+          setOptions={setOptions}
+          canvasRef={canvasRef}
+        />
       </S.SearchContainer>
-
-      <MapContainer
-        address={address}
-        setOptions={setOptions}
-        canvasRef={canvasRef}
-      />
     </S.Container>
   );
 }

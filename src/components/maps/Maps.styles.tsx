@@ -37,13 +37,7 @@ export const Text = styled.text`
     fill: #2c3131;
   }
 `;
-export const SelectedRegion = styled.div`
-  border: 1px solid red;
-  z-index: 1000;
-  position: absolute;
-  right: 0;
-  top: 0;
-`;
+
 export const Path = styled.path`
   stroke-linejoin: round;
   stroke: #d6ecfa;
@@ -70,7 +64,7 @@ export const BackBtn = styled.div`
   font-size: 16px;
   left: 10%;
   color: #3cb371;
-  top: 20px;
+  top: 0px;
   font-weight: 300;
   z-index: 11;
   /* color: #464646; */

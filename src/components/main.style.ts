@@ -6,23 +6,26 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  align-items: center;
+  flex-direction: column;
 `;
 export const SearchContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
-  width: 100%;
+  width: 1200px;
+  border: 1px solid red;
 `;
 export const Contents = styled.div`
-  margin: 0px auto;
   position: relative;
   display: flex;
+
   height: 530px;
+  width: 50%;
   flex-direction: column;
   align-items: center;
   padding-top: 32px;
   justify-content: space-between;
-  border: 1px solid red;
 `;
 export const Circle = styled(motion.div)`
   width: 500px;
