@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const Container = styled.div`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   width: 100%;
   align-items: center;
   flex-direction: column;
@@ -14,7 +14,7 @@ export const SearchContainer = styled.div`
   /* flex-direction: column; */
   justify-content: center;
   width: 1200px;
-  border: 1px solid red;
+  padding-top: 50px;
 `;
 export const Contents = styled.div`
   position: relative;

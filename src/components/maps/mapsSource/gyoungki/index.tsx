@@ -14,13 +14,12 @@ const Path = styled.path`
   stroke-opacity: 1;
 `;
 const Text = styled.tspan`
+  font-size: 28px;
+
   :hover {
     cursor: pointer;
-    font-size: 50px;
-    font-weight: 500;
-    fill: #2c3131;
+    fill: #04c5fb;
   }
-  padding: 15px;
 `;
 
 export default function Gyoungki(props: DooRegionProps) {
@@ -675,12 +674,19 @@ export default function Gyoungki(props: DooRegionProps) {
               }}
               transform="matrix(1,0,0,-1,669.6641,1189.7627)"
             >
-              <Text id="연천" onClick={onClickCityName} y="0" x="0 39.91308">
+              <Text
+                id="연천"
+                onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
+                y="0"
+                x="0 39.91308"
+              >
                 연천
               </Text>
               <Text
                 id="파주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="182.66283"
                 x="-118.67663 -75.76355"
               >
@@ -689,6 +695,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="동두천"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="148.66295"
                 x="56.651077 90.564156 125.47724"
               >
@@ -697,6 +704,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="양주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="217.33162"
                 x="21.359486 61.272568"
               >
@@ -705,6 +713,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="의정부"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="292.66647"
                 x="51.553406 91.466484 130.379562"
               >
@@ -713,6 +722,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="구리"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="413.32681"
                 x="111.87204 151.78513"
               >
@@ -729,6 +739,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="남양주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="349.87115"
                 x="166.65474 206.56783 246.4809"
               >
@@ -737,6 +748,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="포천"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="105.20585"
                 x="174.63571 214.5488"
               >
@@ -745,6 +757,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="가평"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="236.75352"
                 x="292.6434 332.55649"
               >
@@ -753,6 +766,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="양평"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="487.02396"
                 x="399.30246 439.21555"
               >
@@ -761,6 +775,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="여주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="660.41412"
                 x="452.63196 492.54504"
               >
@@ -769,6 +784,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="이천"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="713.44373"
                 x="317.6474 357.56049"
               >
@@ -777,6 +793,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="안성"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="886.78772"
                 x="208.31265 248.22574"
               >
@@ -785,6 +802,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="용인"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="725.46136"
                 x="174.63571 214.5488"
               >
@@ -794,6 +812,7 @@ export default function Gyoungki(props: DooRegionProps) {
                 id="      >
         "
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="565.42664"
                 x="228.01137 268.92444"
               >
@@ -802,6 +821,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="하남"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="478.48941"
                 x="166.65474 206.56783"
               >
@@ -810,6 +830,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="평택"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="886.78772"
                 x="37.159969 77.073051"
               >
@@ -818,6 +839,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="오산"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="780.47473"
                 x="48.577839 88.490921"
               >
@@ -826,6 +848,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="화성"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="765.66608"
                 x="-149.88547 -109.97239"
               >
@@ -834,6 +857,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="수원"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="676.03003"
                 x="12.386657 52.299736"
               >
@@ -842,6 +866,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="성남"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="576.03723"
                 x="92.634659 132.54774"
               >
@@ -850,6 +875,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="과천"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="549.9491"
                 x="21.359486 61.272568"
               >
@@ -858,6 +884,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="의왕"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="603.11719"
                 x="16.377144 56.290222"
               >
@@ -866,6 +893,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="군포"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="622.74664"
                 x="-36.698643 -4.785563"
               >
@@ -874,6 +902,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="안양"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="573.59216"
                 x="-33.584679 7.671598"
               >
@@ -882,6 +911,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="광명"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="539.98444"
                 x="-87.421654 -47.508575"
               >
@@ -889,6 +919,7 @@ export default function Gyoungki(props: DooRegionProps) {
               </Text>
               <Text
                 id="부천"
+                onMouseEnter={props.onMouseEnter}
                 onClick={onClickCityName}
                 y="487.02396"
                 x="-145.41058 -105.49751"
@@ -897,6 +928,7 @@ export default function Gyoungki(props: DooRegionProps) {
               </Text>
               <Text
                 id="인천"
+                onMouseEnter={props.onMouseEnter}
                 onClick={onClickCityName}
                 y="471.13123"
                 x="-218.48494 -180.57185"
@@ -906,6 +938,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="시흥"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="599.61108"
                 x="-181.41724 -141.50415"
               >
@@ -914,6 +947,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="안산"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="642.60681"
                 x="-105.48265 -65.569565"
               >
@@ -922,6 +956,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="강화도"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="300.5062"
                 x="-402.09399 -362.18091"
               >
@@ -930,6 +965,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="김포"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="340.5062"
                 x="-266.09399 -226.18091"
               >
@@ -938,6 +974,7 @@ export default function Gyoungki(props: DooRegionProps) {
               <Text
                 id="고양"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="349.87115"
                 x="-111.43378 -71.520699"
               >

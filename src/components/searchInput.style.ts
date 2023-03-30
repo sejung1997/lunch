@@ -8,19 +8,23 @@ export const Input = styled.div`
   flex-direction: column;
   align-items: center;
   position: absolute;
-  padding: 10px;
-  top: 100px;
+  /* padding: 10px; */
+  /* top: 100px; */
   left: calc(50% - 150px);
   height: 100px;
   input {
-    height: 20px;
+    margin-top: 10px;
+    height: 30px;
     width: 300px;
+  }
+  h4 {
+    font-size: 18px;
   }
 `;
 export const ResultsWrapper = styled.div`
   border: 1px solid gray;
   position: absolute;
-  top: 105px;
+  top: 60px;
   z-index: 3;
   background-color: #fff;
   width: 300px;

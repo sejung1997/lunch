@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 // import { breakPoints } from "../../../commons/styles/Media";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 export const Main = styled.div`
   width: 500px;
   height: 470px;
@@ -16,15 +17,29 @@ export const Contents = styled.div`
   fill: #fff;
   flex-direction: column;
   position: absolute;
-  top: -20px;
+  top: 20px;
   margin-top: 40px;
+`;
+export const TextWrapper = styled.div`
+  margin-bottom: 40px;
+  display: flex;
+  height: 30px;
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+`;
+
+export const FocusedRegion = styled.div`
+  z-index: 100;
+  font-size: 16px;
 `;
 
 export const Text = styled.text`
   font-size: 35px;
   font-weight: 500;
   padding: 20px;
-  display: none;
+  /* display: none; */
   text-anchor: middle;
   alignment-baseline: middle;
   fill: #2c3131;
@@ -58,21 +73,14 @@ export const CityWrapper = styled.div`
   /* margin-top: 40px; */
 `;
 
-export const BackBtn = styled.div`
-  padding: 13px 20px;
+export const BackBtn = styled(ArrowBackIosNewIcon)`
+  font-size: 25px;
+  font-weight: 400;
+  color: #5e5d5d;
   position: absolute;
-  font-size: 16px;
-  left: 10%;
-  color: #3cb371;
-  top: 0px;
-  font-weight: 300;
-  z-index: 11;
-  /* color: #464646; */
+  left: 0;
   :hover {
     cursor: pointer;
-  }
-  img {
-    margin-right: 11px;
   }
 `;
 export const search = styled.div`

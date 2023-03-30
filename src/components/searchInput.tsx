@@ -21,6 +21,8 @@ interface SearchAddressResult {
 }
 type SearchInputProps = {
   setAddress: React.Dispatch<React.SetStateAction<optionType>>;
+  address: optionType;
+  region: any;
 };
 declare global {
   interface Window {
@@ -35,38 +37,40 @@ const instance = axios.create({
   },
 });
 
-const SearchInput = ({ setAddress }: SearchInputProps) => {
+const SearchInput = ({ setAddress, region }: SearchInputProps) => {
   const [input, setInput] = React.useState<string>("");
   const [data, setData] = React.useState<SearchAddressResult[]>([]);
   const [isNonResultShow, setIsNonResultShow] = React.useState(false);
   const [selectedSection, setSelectedSection] = React.useState(0);
-
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  console.log(region, "region1");
   const onChangeInput = async (keyword: any) => {
     console.log(keyword, "onChangeInput");
     try {
       const { data } = await instance.get(
-        `keyword.json?y=37.51505354009884&x=126.89554077580914&radius=20000&category_group_code=FD6&query=${keyword}`
+        `keyword.json?y=${region.x}&x=${region.y}&radius=20000&category_group_code=FD6&query=${keyword}`
       );
       if (data.documents.length === 0) {
         setIsNonResultShow(true);
         setTimeout(() => setIsNonResultShow(false), 1000);
       }
       setData(data.documents);
-      setSelectedSection(0);
     } catch (error: any) {
       console.log(error);
       if (error.response.data.errorType === "MissingParameter") setData([]);
+    } finally {
+      setSelectedSection(0);
     }
   };
   const handleSetAddress = (index: number) => () => {
     setAddress({
-      value: data[index]?.place_name,
+      name: data[index]?.place_name,
       y: Number(data[index]?.x),
       x: Number(data[index]?.y),
       isNonButton: false,
     });
-    setInput("");
     setData([]);
+    if (inputRef?.current) inputRef.current.value = "";
   };
   const keyDownInput = (e: any) => {
     console.log(e.code, "keyDownInput");
@@ -84,24 +88,27 @@ const SearchInput = ({ setAddress }: SearchInputProps) => {
       }
       case "Enter": {
         setAddress({
-          value: data[selectedSection]?.place_name,
-          address: data[selectedSection]?.address_name,
+          name: data[selectedSection]?.place_name,
+          address_name: data[selectedSection]?.address_name,
           y: Number(data[selectedSection]?.x),
           x: Number(data[selectedSection]?.y),
           isNonButton: false,
         });
         setData([]);
+        if (inputRef?.current) inputRef.current.value = "";
       }
       default:
         return;
     }
   };
+  console.log(selectedSection, "selectedSection");
   return (
     <S.Input>
       <h4>식당을 추가해주세요</h4>
       <input
+        ref={inputRef}
         onKeyDown={keyDownInput}
-        onChange={debounce((e: any) => onChangeInput(e.target.value), 1000)}
+        onChange={debounce((e: any) => onChangeInput(e.target.value), 600)}
       />
 
       {data.length > 0 ? (

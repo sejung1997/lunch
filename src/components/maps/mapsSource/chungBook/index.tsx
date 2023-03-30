@@ -9,13 +9,11 @@ const Path = styled.path`
   stroke: none;
 `;
 const Text = styled.tspan`
+  font-size: 28px;
   :hover {
     cursor: pointer;
-    font-size: 50px;
-    font-weight: 500;
-    fill: #2c3131;
+    fill: #04c5fb;
   }
-  padding: 15px;
 `;
 const Wrap = styled.div`
   width: 100%;
@@ -78,6 +76,7 @@ export default function ChungBook(props: DooRegionProps) {
                 fillOpacity: "1",
                 fillRule: "nonzero",
                 stroke: "none",
+                marginTop: "10px",
               }}
               d="M 0,0 H 1417.32 V 1501.856 H 0 Z"
             />
@@ -221,6 +220,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="단양군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="0"
                 x="0 43.013924 86.027847"
               >
@@ -229,6 +229,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="제천시"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="-113.98492"
                 x="-150.68251 -107.66858 -64.654655"
               >
@@ -237,6 +238,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="충주시"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="-25.333843"
                 x="-349.35684 -306.3429 -263.32898"
               >
@@ -245,6 +247,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="음성군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="26.6544"
                 x="-560.61121 -517.59729 -474.58334"
               >
@@ -253,6 +256,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="진천군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="109.9885"
                 x="-655.27429 -612.26038 -579.24646"
               >
@@ -261,6 +265,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="증평"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="180.98581"
                 x="-546.60632 -503.59241"
               >
@@ -269,6 +274,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="괴산군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="188.97865"
                 x="-391.92743 -348.91348 -305.89957"
               >
@@ -277,6 +283,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="청주시"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="311.65146"
                 x="-613.91998 -570.90607 -527.89215"
               >
@@ -285,6 +292,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="보은군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="436.27032"
                 x="-450.58795 -407.57404 -364.56009"
               >
@@ -293,6 +301,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="옥천군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="599.32434"
                 x="-508.5882 -465.57428 -422.56036"
               >
@@ -301,6 +310,7 @@ export default function ChungBook(props: DooRegionProps) {
               <Text
                 id="영동군"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="734.64673"
                 x="-403.91669 -360.90277 -317.88882"
               >

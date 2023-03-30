@@ -1,16 +1,16 @@
 export type RegionInputs = {
-  x: string;
-  y: string;
-  name: string;
+  x: number | null;
+  y: number | null;
+  name?: string;
+  level?: number;
 };
 
 export type DooRegionProps = {
   setCityName: React.Dispatch<React.SetStateAction<string>>;
+  onMouseEnter: (event: any) => void;
 };
-export type optionType = {
-  value: string;
-  x: number;
-  address?: string;
-  y: number;
+export type optionType = RegionInputs & {
+  address_name?: string;
   isNonButton?: boolean;
 };
+export type ButtonName = "돌리기!" | "다시 돌리기!" | "멈추기!";

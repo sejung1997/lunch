@@ -1,11 +1,16 @@
 import { useAnimationControls } from "framer-motion";
 import React from "react";
 import produce from "immer";
+
+import { stepState } from "../data/atoms";
+
 import SearchInput from "./searchInput";
 import MapContainer from "./mapContainer";
 import * as S from "./main.style";
-import { optionType } from "../types/type";
-
+import { optionType, ButtonName } from "../types/type";
+import { SmallButton, RollingButton } from "../commons/smallButton";
+import { useRecoilState } from "recoil";
+import { regionState } from "../data/atoms";
 const geom = {
   x: 250,
   y: 250,
@@ -17,25 +22,35 @@ const geom = {
 const initAddress = {
   y: 126.8954,
   x: 37.5151,
-  value: "뱅크몰",
+  name: "뱅크몰",
   isNonButton: true,
+  level: 3,
   address_name: undefined,
 };
 const duration = 0.3;
-type ButtonName = "돌리기!" | "다시 돌리기!" | "멈추기!";
 export default function Roller() {
+  const [region, setRegion] = useRecoilState(regionState);
+  console.log(region, "region");
   const [options, setOptions] = React.useState<optionType[]>([]);
-  const [address, setAddress] = React.useState<optionType>(initAddress);
+  const [address, setAddress] = React.useState<optionType>({
+    x: region.x,
+    y: region.y,
+    level: region.level,
+  });
   const [buttonName, setButtonName] = React.useState<ButtonName>("돌리기!");
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [btnLoading, setBtnLoading] = React.useState(false);
+  const [step, setStep] = useRecoilState(stepState);
 
   const circleRef = React.useRef(null);
   const isRerollingRef = React.useRef(false);
   const imgUrlRef = React.useRef<unknown>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const controls = useAnimationControls();
-
+  // React.useEffect(() => {
+  //   setAddress({
+  //     ...region,
+  //   });
+  // }, [region]);
   const handleBallot = (): { selectedAngle: number; selectedIndex: number } => {
     const eachDeg = 360 / options.length;
 
@@ -102,7 +117,7 @@ export default function Roller() {
       ctx.font = "18px serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.strokeText(`${options[0].value}`, geom.x, geom.y);
+      ctx.strokeText(`${options[0].name}`, geom.x, geom.y);
     } else {
       const eachDeg = 360 / divideNum;
       for (let i = 0; i < divideNum; i++) {
@@ -121,7 +136,7 @@ export default function Roller() {
         const Pi = (Math.PI / 180) * (eachDeg * (i - 1) + eachDeg / 2);
         const x = 125 * Math.cos(Pi);
         const y = 125 * Math.sin(Pi);
-        ctx.strokeText(`${options[i].value}`, geom.x + x, geom.y + y);
+        ctx.strokeText(`${options[i].name}`, geom.x + x, geom.y + y);
         ctx.lineTo(geom.x, geom.y);
       }
     }
@@ -186,17 +201,24 @@ export default function Roller() {
     console.log("ccc");
     setOptions(
       produce((draft) => {
-        return draft.filter((x) => x.value !== address.value);
+        return draft.filter((x) => x.name !== address.name);
       })
     );
     setAddress(initAddress);
     isRerollingRef.current = true;
   };
-
+  const reset = () => {
+    setStep(0);
+    setRegion({
+      x: 0,
+      y: 0,
+      name: "",
+      level: 3,
+    });
+  };
   return (
     <S.Container>
-      <SearchInput setAddress={setAddress} />
-
+      <SearchInput setAddress={setAddress} address={address} region={region} />
       <S.SearchContainer>
         <S.Contents>
           <S.RolletMark>▼</S.RolletMark>
@@ -204,17 +226,19 @@ export default function Roller() {
             <canvas ref={canvasRef} width="450" height="450" id="canvas" />
           </S.Circle>
           <S.ButtonGroup>
-            <S.Button type="button" onClick={onClickRoll} disabled={btnLoading}>
-              {buttonName}
-            </S.Button>
+            <SmallButton contents="지역 다시 선택하기" onClick={reset} />
+            <RollingButton
+              onClick={onClickRoll}
+              disabled={btnLoading}
+              contents={buttonName}
+            />
+
             {buttonName === "다시 돌리기!" && isRerollingRef.current && (
-              <S.Button
-                type="button"
+              <SmallButton
+                contents={`${address.name} 제외하고 다시 돌리기`}
                 onClick={onClickReRoll}
                 disabled={btnLoading}
-              >
-                {address.value} 제외하고 다시 돌리기
-              </S.Button>
+              />
             )}
           </S.ButtonGroup>
         </S.Contents>

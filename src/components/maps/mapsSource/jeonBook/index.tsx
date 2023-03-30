@@ -8,13 +8,12 @@ const Path = styled.path`
   stroke: none;
 `;
 const Text = styled.tspan`
+  font-size: 28px;
+
   :hover {
     cursor: pointer;
-    font-size: 50px;
-    font-weight: 500;
-    fill: #2c3131;
+    fill: #04c5fb;
   }
-  padding: 15px;
 `;
 const Wrap = styled.div`
   width: 100%;
@@ -224,12 +223,19 @@ export default function JeonBook(props: DooRegionProps) {
               }}
               transform="matrix(1,0,0,-1,343.335,985.3467)"
             >
-              <Text id="군산" onClick={onClickCityName} y="0" x="0 32.714279">
+              <Text
+                id="군산"
+                onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
+                y="0"
+                x="0 32.714279"
+              >
                 군산
               </Text>
               <Text
                 id="익산"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="-60.000626"
                 x="210.0022 242.71648"
               >
@@ -238,6 +244,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="김제"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="133.27768"
                 x="118.49757 151.21185"
               >
@@ -246,6 +253,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="부안"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="242.82651"
                 x="-84.866409 -52.152134"
               >
@@ -254,6 +262,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="정읍"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="331.50714"
                 x="109.80555 142.51982"
               >
@@ -262,6 +271,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="고창"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="479.56491"
                 x="-148.93799 -116.22371"
               >
@@ -270,6 +280,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="순창"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="551.55835"
                 x="269.81946 302.53372"
               >
@@ -278,6 +289,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="임실"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="368.58575"
                 x="371.07968 403.79395"
               >
@@ -286,6 +298,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="전주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="140.13594"
                 x="279.53836 312.25266"
               >
@@ -294,6 +307,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="완주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="-14.74343"
                 x="390.51752 423.23181"
               >
@@ -302,6 +316,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="진안"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="140.13594"
                 x="547.23065 579.94495"
               >
@@ -310,6 +325,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="무주"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="55.049477"
                 x="782.72211 815.4364"
               >
@@ -318,6 +334,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="장수"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="315.18668"
                 x="627.32928 660.04358"
               >
@@ -326,6 +343,7 @@ export default function JeonBook(props: DooRegionProps) {
               <Text
                 id="남원"
                 onClick={onClickCityName}
+                onMouseEnter={props.onMouseEnter}
                 y="551.59503"
                 x="517.81714 550.53143"
               >
