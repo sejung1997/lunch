@@ -2,10 +2,10 @@ import styled from "@emotion/styled";
 import produce from "immer";
 import { add, drop } from "lodash";
 import React from "react";
-import { SmallButton } from "../commons/smallButton";
+import { SmallButton } from "../commons/SmallButton";
 import { optionType } from "../types/type";
 import { useRecoilState } from "recoil";
-import { regionState } from "../data/atoms";
+import { regionState } from "../data/Atoms";
 export const Map = styled.div`
   width: 100%;
   height: 390px;
@@ -214,9 +214,9 @@ const MapContainer = ({
           {
             title: "지도로 확인하기",
             link: {
-              mobileWebUrl: "https://developers.kakao.com",
+              // mobileWebUrl: "https://developers.kakao.com",
               // webUrl: `https://map.kakao.com/link/to/${address.name},${addres js.x},${address.y}`,
-              webUrl: "https://developers.kakao.com",
+              // webUrl: "https://developers.kakao.com",
             },
           },
         ],

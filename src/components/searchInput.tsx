@@ -3,7 +3,7 @@ import produce from "immer";
 import styled from "@emotion/styled";
 import axios from "axios";
 import { debounce } from "lodash";
-import * as S from "./searchInput.style";
+import * as S from "./SearchInput.style";
 import { optionType } from "../types/type";
 
 interface SearchAddressResult {

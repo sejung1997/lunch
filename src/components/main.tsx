@@ -2,15 +2,15 @@ import { useAnimationControls } from "framer-motion";
 import React from "react";
 import produce from "immer";
 
-import { stepState } from "../data/atoms";
+import { stepState } from "../data/Atoms";
 
-import SearchInput from "./searchInput";
-import MapContainer from "./mapContainer";
-import * as S from "./main.style";
+import SearchInput from "./SearchInput";
+import MapContainer from "./MapContainer";
+import * as S from "./Main.style";
 import { optionType, ButtonName } from "../types/type";
-import { SmallButton, RollingButton } from "../commons/smallButton";
+import { SmallButton, RollingButton } from "../commons/SmallButton";
 import { useRecoilState } from "recoil";
-import { regionState } from "../data/atoms";
+import { regionState } from "../data/Atoms";
 const geom = {
   x: 250,
   y: 250,

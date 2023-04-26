@@ -1,13 +1,15 @@
 import "./App.css";
 import React from "react";
 import styled from "@emotion/styled";
-import Reset from "./commons/globalStyles";
+import Reset from "./commons/GlobalStyles";
 import { Global } from "@emotion/react";
 // import SearchInput from "./components/searchInput";
 import SvgMap from "./components/maps/Maps.container";
 import { RegionInputs } from "./types/type";
-import { stepState } from "./data/atoms";
-import Roller from "./components/main";
+import { stepState } from "./data/Atoms";
+import Roller from "./components/Main";
+import RegionHistory from "./components/RegionHIstory";
+
 import { useRecoilState } from "recoil";
 
 const Container = styled.div`
@@ -31,16 +33,26 @@ const MapContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+
   justify-content: center;
 `;
 const RegionTitle = styled.div`
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 30px;
+
+
+
+
+
+
+
 `;
 const SelectRegion = () => {
   return (
     <MapContainer>
       <RegionTitle>지역을 선택해주세요!</RegionTitle>
+      <RegionHistory/>
 
       <SvgMap />
     </MapContainer>
@@ -49,7 +61,7 @@ const SelectRegion = () => {
 
 const App = () => {
   const [step, setStep] = useRecoilState(stepState);
-  console.log(step, "step");
+
   const Contents = React.useMemo(() => {
     switch (step) {
       case 0: {

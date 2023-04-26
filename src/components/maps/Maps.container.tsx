@@ -1,16 +1,16 @@
 import MapsUI from "./Maps.presenter";
 import gsap from "gsap/dist/gsap";
 import { useRecoilState } from "recoil";
-import { stepState, regionState } from "../../data/atoms";
+import { stepState, regionState } from "../../data/Atoms";
 import { RegionInputs } from "../../types/type";
-import ChungBook from "./mapsSource/chungBook";
-import ChungNam from "./mapsSource/chungNam";
-import GangOne from "./mapsSource/gangOne";
-import GyoungBook from "./mapsSource/gyoungBook";
-import Gyoungki from "./mapsSource/gyoungki";
-import GyoungNam from "./mapsSource/gyoungNam";
-import JeonBook from "./mapsSource/jeonBook";
-import JeonNam from "./mapsSource/jeonNam";
+import ChungBook from "./mapsSource/ChungBook";
+import ChungNam from "./mapsSource/ChungNam";
+import GangOne from "./mapsSource/GangOne";
+import GyoungBook from "./mapsSource/GyoungBook";
+import Gyoungki from "./mapsSource/Gyoungki";
+import GyoungNam from "./mapsSource/GyoungNam";
+import JeonBook from "./mapsSource/JeonBook";
+import JeonNam from "./mapsSource/JeonNam";
 import React from "react";
 
 type SvgMapProps = {
@@ -40,6 +40,11 @@ const REGION_COORDINATES: RegionCoordinates = {
   광주광역시: [35.126033, 126.831302, -1],
   세종특별자치시: [36.5040736, 127.2494855, -1],
 };
+const pushLocalStorage = (newItem: string) => {
+  const temp= JSON.parse(localStorage.getItem('regionHistory') || "[]")
+  temp.push(newItem)
+  localStorage.setItem('regionHistory', JSON.stringify(temp))
+}
 export default function SvgMap() {
   const [step, setStep] = useRecoilState(stepState);
   const [region, setRegion] = useRecoilState(regionState);
@@ -87,7 +92,10 @@ export default function SvgMap() {
       name: event.target.id,
       level: 10,
     });
-    setTimeout(() => setStep(1), 300);
+    setTimeout(() => {
+      pushLocalStorage(event.target.id)
+      setStep(1)
+    }, 300);
   };
   console.log(region, "region");
 
@@ -107,8 +115,10 @@ export default function SvgMap() {
   };
   const selectCity = (value: string) => {
     console.log(region, value, "region");
+    pushLocalStorage(citiesRefCache.current  + value)
     setRegion({ ...region, name: value, level: 8 });
     setStep(1);
+
   };
   const onMouseEnter = (event: any) => {
     console.log(event, "mouseover");
