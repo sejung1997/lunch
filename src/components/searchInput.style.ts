@@ -12,6 +12,7 @@ export const Input = styled.div`
   /* top: 100px; */
   left: calc(50% - 150px);
   height: 100px;
+  top: 80px;
   input {
     margin-top: 10px;
     height: 30px;
@@ -34,8 +35,7 @@ export const Result = styled.div`
   border: 1px solid gray;
   display: flex;
   justify-content: space-between;
-  background-color: ${({ selectedSection }: ResultType) =>
-    selectedSection ? "yellow" : ""};
+  background-color: ${({ selectedSection }: ResultType) => (selectedSection ? "yellow" : "")};
 `;
 export const ElCategory = styled.span`
   font-size: 10px;

@@ -29,22 +29,21 @@ const REGION_COORDINATES: RegionCoordinates = {
   // 경상남도: [35.259787, 128.664734, 5],
   // 전라북도: [35.716705, 127.144185, 6],
   // 전라남도: [34.8194, 126.893113, 7],
-
-  제주특별자치도: [33.364805, 126.542671, -1],
-  부산광역시: [35.198362, 129.053922, -1],
-  대구광역시: [35.798838, 128.583052, -1],
-  인천광역시: [37.469221, 126.573234, -1],
-  울산광역시: [35.519301, 129.239078, -1],
-  대전광역시: [36.321655, 127.378953, -1],
-  서울특별시: [37.540705, 126.956764, -1],
-  광주광역시: [35.126033, 126.831302, -1],
-  세종특별자치시: [36.5040736, 127.2494855, -1],
+  // 제주특별자치도: [33.911805, 126.542671, -1],
+  // 부산광역시: [35.198362, 129.053922, -1],
+  // 대구광역시: [35.798838, 128.583052, -1],
+  // 인천광역시: [37.469221, 126.573234, -1],
+  // 울산광역시: [35.519301, 129.239078, -1],
+  // 대전광역시: [36.321655, 127.378953, -1],
+  // 서울특별시: [37.540705, 126.956764, -1],
+  // 광주광역시: [35.126033, 126.831302, -1],
+  // 세종특별자치시: [36.5040736, 127.2494855, -1],
 };
 const pushLocalStorage = (newItem: string) => {
-  const temp= JSON.parse(localStorage.getItem('regionHistory') || "[]")
-  temp.push(newItem)
-  localStorage.setItem('regionHistory', JSON.stringify(temp))
-}
+  const temp = JSON.parse(localStorage.getItem("regionHistory") || "[]");
+  temp.push(newItem);
+  localStorage.setItem("regionHistory", JSON.stringify(temp));
+};
 export default function SvgMap() {
   const [step, setStep] = useRecoilState(stepState);
   const [region, setRegion] = useRecoilState(regionState);
@@ -85,16 +84,16 @@ export default function SvgMap() {
       return;
     }
     const [x, y, i] = REGION_COORDINATES[event.target.id];
-    console.log(x, y, i);
+    console.log(x, y, i, "region222");
     setRegion({
-      x,
-      y,
+      x: 0,
+      y: 0,
       name: event.target.id,
       level: 10,
     });
     setTimeout(() => {
-      pushLocalStorage(event.target.id)
-      setStep(1)
+      pushLocalStorage(event.target.id);
+      setStep(1);
     }, 300);
   };
   console.log(region, "region");
@@ -115,10 +114,9 @@ export default function SvgMap() {
   };
   const selectCity = (value: string) => {
     console.log(region, value, "region");
-    pushLocalStorage(citiesRefCache.current  + value)
+    pushLocalStorage(citiesRefCache.current + value);
     setRegion({ ...region, name: value, level: 8 });
     setStep(1);
-
   };
   const onMouseEnter = (event: any) => {
     console.log(event, "mouseover");
@@ -129,56 +127,42 @@ export default function SvgMap() {
     () => [
       {
         name: "충청북도",
-        component: (
-          <ChungBook setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <ChungBook setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "충청남도",
-        component: (
-          <ChungNam setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <ChungNam setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "강원도",
-        component: (
-          <GangOne setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <GangOne setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "경상북도",
-        component: (
-          <GyoungBook setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <GyoungBook setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "경기도",
-        component: (
-          <Gyoungki setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <Gyoungki setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "경상남도",
-        component: (
-          <GyoungNam setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <GyoungNam setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "전라북도",
-        component: (
-          <JeonBook setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <JeonBook setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
       {
         name: "전라남도",
-        component: (
-          <JeonNam setCityName={selectCity} onMouseEnter={onMouseEnter} />
-        ),
+        component: <JeonNam setCityName={selectCity} onMouseEnter={onMouseEnter} />,
       },
     ],
     []
   );
-
+  const onMouseLeave = () => {
+    setFocusedRegion("");
+  };
   return (
     <MapsUI
       region={region}
@@ -188,6 +172,7 @@ export default function SvgMap() {
       reset={reset}
       // megalopolisRef={megalopolisRef}
       onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       wholeMapRef={wholeMapRef}
       citiesRefCache={citiesRefCache}
       focusedRegion={focusedRegion}

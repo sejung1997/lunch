@@ -21,13 +21,6 @@ const Container = styled.div`
   display: flex;
   padding-top: 70px;
   align-items: center;
-  /* justify-content: center; */
-`;
-const Title = styled.div`
-  margin: 60px 0 50px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 20px;
 `;
 const MapContainer = styled.div`
   display: flex;
@@ -38,21 +31,14 @@ const MapContainer = styled.div`
   justify-content: center;
 `;
 const RegionTitle = styled.div`
-  font-size: 20px;
-  margin-bottom: 30px;
-
-
-
-
-
-
-
+  font-size: 22px;
+  margin-bottom: 60px;
 `;
 const SelectRegion = () => {
   return (
     <MapContainer>
       <RegionTitle>지역을 선택해주세요!</RegionTitle>
-      <RegionHistory/>
+      <RegionHistory />
 
       <SvgMap />
     </MapContainer>

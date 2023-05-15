@@ -12,39 +12,29 @@ export const Container = styled.div`
 export const SearchContainer = styled.div`
   display: flex;
   /* flex-direction: column; */
-  justify-content: center;
+  justify-content: space-between;
   width: 1200px;
-  padding-top: 50px;
+  padding-top: 150px;
 `;
 export const Contents = styled.div`
   position: relative;
   display: flex;
-
-  height: 530px;
+  height: 600px;
   width: 50%;
   flex-direction: column;
   align-items: center;
-  padding-top: 32px;
   justify-content: space-between;
 `;
 export const Circle = styled(motion.div)`
   width: 500px;
   height: 500px;
-  top: 10px;
+  top: 20px;
   margin: 0 auto;
   position: absolute;
-  div {
-    width: 50px;
-    height: 50px;
-    background-color: red;
-    position: absolute;
-    top: 225px;
-    left: 325px;
-  }
 `;
 export const RolletMark = styled.span`
   font-size: 40px;
-  color: #333;
+  color: black;
 `;
 export const ButtonGroup = styled.div`
   display: flex;

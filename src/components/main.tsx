@@ -14,23 +14,15 @@ import { regionState } from "../data/Atoms";
 const geom = {
   x: 250,
   y: 250,
-  radius: 200,
+  radius: 250,
   statrAngle: 0,
   endAngle: 360,
   anticlockwise: true,
 };
-const initAddress = {
-  y: 126.8954,
-  x: 37.5151,
-  name: "뱅크몰",
-  isNonButton: true,
-  level: 3,
-  address_name: undefined,
-};
+
 const duration = 0.3;
 export default function Roller() {
   const [region, setRegion] = useRecoilState(regionState);
-  console.log(region, "region");
   const [options, setOptions] = React.useState<optionType[]>([]);
   const [address, setAddress] = React.useState<optionType>({
     x: region.x,
@@ -97,23 +89,9 @@ export default function Roller() {
     const divideNum = options.length;
     console.log(options, divideNum, "circleInfo.divideNum");
     if (divideNum === 0)
-      ctx.arc(
-        geom.x,
-        geom.y,
-        geom.radius,
-        degToRad(geom.statrAngle),
-        degToRad(geom.endAngle),
-        geom.anticlockwise
-      );
+      ctx.arc(geom.x, geom.y, geom.radius, degToRad(geom.statrAngle), degToRad(geom.endAngle), geom.anticlockwise);
     else if (divideNum === 1) {
-      ctx.arc(
-        geom.x,
-        geom.y,
-        geom.radius,
-        degToRad(geom.statrAngle),
-        degToRad(geom.endAngle),
-        geom.anticlockwise
-      );
+      ctx.arc(geom.x, geom.y, geom.radius, degToRad(geom.statrAngle), degToRad(geom.endAngle), geom.anticlockwise);
       ctx.font = "18px serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -204,7 +182,6 @@ export default function Roller() {
         return draft.filter((x) => x.name !== address.name);
       })
     );
-    setAddress(initAddress);
     isRerollingRef.current = true;
   };
   const reset = () => {
@@ -223,15 +200,11 @@ export default function Roller() {
         <S.Contents>
           <S.RolletMark>▼</S.RolletMark>
           <S.Circle animate={controls} ref={circleRef}>
-            <canvas ref={canvasRef} width="450" height="450" id="canvas" />
+            <canvas ref={canvasRef} width="550" height="550" id="canvas" />
           </S.Circle>
           <S.ButtonGroup>
             <SmallButton contents="지역 다시 선택하기" onClick={reset} />
-            <RollingButton
-              onClick={onClickRoll}
-              disabled={btnLoading}
-              contents={buttonName}
-            />
+            <RollingButton onClick={onClickRoll} disabled={btnLoading} contents={buttonName} />
 
             {buttonName === "다시 돌리기!" && isRerollingRef.current && (
               <SmallButton
@@ -242,11 +215,7 @@ export default function Roller() {
             )}
           </S.ButtonGroup>
         </S.Contents>
-        <MapContainer
-          address={address}
-          setOptions={setOptions}
-          canvasRef={canvasRef}
-        />
+        <MapContainer address={address} setOptions={setOptions} canvasRef={canvasRef} />
       </S.SearchContainer>
     </S.Container>
   );

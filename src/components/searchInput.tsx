@@ -42,6 +42,7 @@ const SearchInput = ({ setAddress, region }: SearchInputProps) => {
   const [data, setData] = React.useState<SearchAddressResult[]>([]);
   const [isNonResultShow, setIsNonResultShow] = React.useState(false);
   const [selectedSection, setSelectedSection] = React.useState(0);
+  const isFirstKeyDown = React.useRef<boolean>(true);
   const inputRef = React.useRef<HTMLInputElement>(null);
   console.log(region, "region1");
   const onChangeInput = async (keyword: any) => {
@@ -60,6 +61,7 @@ const SearchInput = ({ setAddress, region }: SearchInputProps) => {
       if (error.response.data.errorType === "MissingParameter") setData([]);
     } finally {
       setSelectedSection(0);
+      isFirstKeyDown.current = true;
     }
   };
   const handleSetAddress = (index: number) => () => {
@@ -73,7 +75,7 @@ const SearchInput = ({ setAddress, region }: SearchInputProps) => {
     if (inputRef?.current) inputRef.current.value = "";
   };
   const keyDownInput = (e: any) => {
-    console.log(e.code, "keyDownInput");
+    console.log(e.code, e.repeat, selectedSection, "keyDownInput");
     if (data.length === 0) return;
     switch (e.code) {
       case "ArrowUp": {
@@ -83,7 +85,14 @@ const SearchInput = ({ setAddress, region }: SearchInputProps) => {
       }
       case "ArrowDown": {
         if (selectedSection === data.length - 1) return;
+        if (isFirstKeyDown.current) {
+          isFirstKeyDown.current = false;
+          return;
+        }
+        if (selectedSection === 0) {
+        }
         setSelectedSection((prev) => prev + 1);
+
         break;
       }
       case "Enter": {
@@ -96,6 +105,7 @@ const SearchInput = ({ setAddress, region }: SearchInputProps) => {
         });
         setData([]);
         if (inputRef?.current) inputRef.current.value = "";
+        break;
       }
       default:
         return;
@@ -114,13 +124,8 @@ const SearchInput = ({ setAddress, region }: SearchInputProps) => {
       {data.length > 0 ? (
         <S.ResultsWrapper>
           {data?.map((el: SearchAddressResult, index) => (
-            <S.Result
-              selectedSection={selectedSection === index}
-              key={el.id}
-              onClick={handleSetAddress(index)}
-            >
-              {el.place_name}{" "}
-              <S.ElCategory>{el.category_name.split(">").at(-1)}</S.ElCategory>
+            <S.Result selectedSection={selectedSection === index} key={el.id} onClick={handleSetAddress(index)}>
+              {el.place_name} <S.ElCategory>{el.category_name.split(">").at(-1)}</S.ElCategory>
             </S.Result>
           ))}
         </S.ResultsWrapper>

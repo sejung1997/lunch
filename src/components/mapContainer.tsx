@@ -8,8 +8,8 @@ import { useRecoilState } from "recoil";
 import { regionState } from "../data/Atoms";
 export const Map = styled.div`
   width: 100%;
-  height: 390px;
-  width: 390px;
+  height: 500px;
+  width: 500px;
 `;
 
 type MapContainerProps = {
@@ -33,7 +33,7 @@ const MapContents = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  margin: 60px 80px 0 50px;
+  margin: 10px 0 0 80px;
 `;
 
 const dataURLtoBlob = (dataurl: string) => {
@@ -47,17 +47,13 @@ const dataURLtoBlob = (dataurl: string) => {
   }
   return new Blob([u8arr], { type: mime });
 };
-const MapContainer = ({
-  address,
-  setOptions,
-  canvasRef,
-}: MapContainerProps) => {
+const MapContainer = ({ address, setOptions, canvasRef }: MapContainerProps) => {
   const container = React.useRef(null);
   const [region, setRegion] = useRecoilState(regionState);
 
   React.useEffect(() => {
     if (!region?.name) return;
-    console.log(region, "address");
+    console.log(region, address, "address");
 
     // if (!address) return;
     const script = document.createElement("script");
@@ -79,23 +75,21 @@ const MapContainer = ({
         const geocoder = new Gkakao.services.Geocoder();
 
         // 주소로 좌표를 검색합니다
-        geocoder.addressSearch(
-          region.name,
-          function (result: any, status: any) {
-            // 정상적으로 검색이 완료됐으면
-            if (status === Gkakao.services.Status.OK) {
-              const coords = new Gkakao.LatLng(result[0].y, result[0].x);
-              console.log(coords);
-              setRegion({
-                ...region,
-                x: result[0].y,
-                y: result[0].x,
-              });
-              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-              map.setCenter(coords);
-            }
+        geocoder.addressSearch(region.name, function (result: any, status: any) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === Gkakao.services.Status.OK) {
+            const coords = new Gkakao.LatLng(result[0].y, result[0].x);
+            console.log(coords);
+            setRegion({
+              ...region,
+              x: result[0].y,
+              y: result[0].x,
+            });
+
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            map.setCenter(coords);
           }
-        );
+        });
       });
     };
   }, []);
@@ -121,10 +115,7 @@ const MapContainer = ({
         console.log(address, "address1");
 
         // 마커가 표시될 위치입니다
-        const markerPosition = new Gkakao.LatLng(
-          Number(address.x),
-          Number(address.y)
-        );
+        const markerPosition = new Gkakao.LatLng(Number(address.x), Number(address.y));
 
         // 마커를 생성합니다
         const marker = new Gkakao.Marker({
@@ -134,11 +125,10 @@ const MapContainer = ({
         // 마커가 지도 위에 표시되도록 설정합니다
         marker.setMap(map);
 
-        const iwContent = `<div style="padding:5px;">${address.name} <br> <a href="https://map.kakao.com/link/to/${address.name},${address.x},${address.y}" style="color:blue" target="_blank">길찾기</a></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        const iwPosition = new Gkakao.LatLng(
-          Number(address.x),
-          Number(address.y)
-        ); //인포윈도우 표시 위치입니다
+        const iwContent = `<div style="padding:5px;width:220px">${address.name} 
+       <br/>
+        <a href="https://map.kakao.com/link/to/${address.name},${address.x},${address.y}" style="color:blue" target="_blank">길찾기</a></div>`; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        const iwPosition = new Gkakao.LatLng(Number(address.x), Number(address.y)); //인포윈도우 표시 위치입니다
 
         // 인포윈도우를 생성합니다
         const infowindow = new Gkakao.InfoWindow({
@@ -203,8 +193,7 @@ const MapContainer = ({
         content: {
           title: "롤렛 추첨 결과", // 인자값으로 받은 title
           description: `${address.name}입니다`, // 인자값으로 받은 title
-          imageUrl:
-            "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+          imageUrl: "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
           link: {
             mobileWebUrl: "http/192.169.42.59:3000/",
             webUrl: "http/192.169.42.59:3000/",
