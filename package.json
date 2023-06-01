@@ -2,6 +2,7 @@
   "name": "lunch",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://sejung1997.github.io/lunch",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@emotion/react": "^11.10.6",
@@ -27,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages pd build"
   },
   "eslintConfig": {
     "extends": [
@@ -49,6 +52,7 @@
   },
   "devDependencies": {
     "@types/gsap": "^3.0.0",
-    "@types/lodash": "^4.14.191"
+    "@types/lodash": "^4.14.191",
+    "gh-pages": "^5.0.0"
   }
 }
